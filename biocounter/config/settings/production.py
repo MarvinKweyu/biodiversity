@@ -182,5 +182,3 @@ sentry_sdk.init(
 SPECTACULAR_SETTINGS["SERVERS"] = [
     {"url": "https://biocounterapi.marvinkweyu.net", "description": "Production server"},
 ]
-# Your stuff...
-# ------------------------------------------------------------------------------

@@ -1,0 +1,46 @@
+<div class="p-4">
+  <div>
+    <p class="text-center">Assign VM to a customer</p>
+    <p class="text-xs font-normal mb-1 text-center">Select a customer from the list below</p>
+  </div>
+
+  <form
+    [formGroup]="assignForm"
+    (ngSubmit)="assignCustomer()"
+    class="flex flex-col justify-center mt-2"
+    autocomplete="off"
+  >
+    <div class="flex flex-col mt-1 mb-4">
+      <ng-select
+        class="border mb-4 p-2 capitalize text-lg"
+        [items]="customers$ | async"
+        [selectOnTab]="true"
+        bindLabel="name"
+        placeholder="Search for a customer"
+        [trackByFn]="trackByFn"
+        [minTermLength]="2"
+        [loading]="customersLoading"
+        typeToSearchText="Please enter 2 or more characters"
+        [typeahead]="customersInput$"
+        [(ngModel)]="selectedCustomer"
+        (ngModelChange)="onSelectedCustomerChange($event)"
+      >
+        <ng-template ng-option-tmp let-item="item" let-index="index" class="border">
+          <div class="capitalize p-1 bg-blue-50 hover:bg-blue-100" (click)="onSelectedCustomerChange(item)">
+            {{ item.name }}
+          </div>
+        </ng-template>
+      </ng-select>
+      <div *ngIf="assignForm.get('user')?.invalid && assignForm.get('user')?.touched" class="text-red-500 text-xs mt-1">
+        Please select a customer
+      </div>
+    </div>
+    <button
+      type="submit"
+      [disabled]="!assignForm.valid"
+      class="bg-amber-200 rounded-lg py-2.5 px-10 text-color text-center"
+    >
+      Assign the VM
+    </button>
+  </form>
+</div>
