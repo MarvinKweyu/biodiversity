@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=biocounter
+POSTGRES_USER=HUwaHLZaCeHHtYmeYfGqxeGOVCJdvKFa
+POSTGRES_PASSWORD=moG2jgqDTGTFgEax3laMpk7TeVmODu3JgY8gJK6xcKcKTM1RjJOk3caYMELWN3FM

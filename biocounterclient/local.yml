@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  biocounter-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: biocounterclient
+    image: biocounterclient:latest
+    
+    ports:
+      - "4200:80"
+    volumes:
+      - .:/app
