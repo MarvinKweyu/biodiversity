@@ -1,0 +1,11 @@
+<div class="flex justify-start text-brand-black text-sm font-normal py-1">
+  <a
+    *ngFor="let resource of navItems"
+    [routerLink]="resource.link"
+    [queryParams]="resource.queryParams"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="px-2"
+    >{{ resource.label }}</a
+  >
+</div>
