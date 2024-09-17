@@ -55,10 +55,11 @@ export class BatchUploadsComponent implements OnInit {
   ]
   paginationData: Pagination = { previous: '', next: '' };
   batchUploads: batchUpload[] = [];
-  statistics: any = { 'total': 0, 'Processed': 0, 'Processing': 0 };
+  statistics: any = { 'total_images': 0, 'total_flowers': 0, 'average_flowers': 0 };
 
 
-  tableHeader: string[] = ["Meta", "Flower count", "Status", "Updated", 'Uploaded',];
+  tableHeader: string[] = ["Name", "Flower count", "Status", "Updated", 'Uploaded',];
+  processing: boolean = false;
 
   constructor(
     private datasetService: DatasetService,
@@ -77,6 +78,8 @@ export class BatchUploadsComponent implements OnInit {
       this.fetchUploads(searchTerm, cursor);
     });
 
+    this.processing = this.datasetService.processingStatus();
+    this.fetchStatistics();
 
   }
 
@@ -93,11 +96,23 @@ export class BatchUploadsComponent implements OnInit {
     });
   }
 
+  fetchStatistics(): void {
+    this.datasetService.fetchStats().subscribe({
+      next: (res: any) => {
+        this.statistics = res;
+      },
+      error: (error: any) => {
+
+        this.toastr.warning('We will load your statistics later');
+      }
+    });
+  }
+
   showImage(imageUpload: batchUpload) {
     // open dialog
     const dialogRef = this.dialog.open(ImageUploadComponent, {
-      width: '25vw',
-      height: '40vh',
+      width: imageUpload.image_file ? '25vw' : '15vw',
+      height: 'auto',
       data: imageUpload,
     });
     dialogRef.afterClosed().subscribe((res: any) => {
@@ -107,7 +122,25 @@ export class BatchUploadsComponent implements OnInit {
   }
 
   processImages(): void {
-    // this function will process the images
+    if (this.processing) {
+      this.toastr.warning('Test images are currently being processed. Please try again later');
+      return;
+    }
+    this.datasetService.processImages().subscribe({
+      next: (res: any) => {
+        this.toastr.success('Images are being processed');
+        this.processing = true;
+        this.datasetService.setProcessing(true);
+
+      },
+      error: (error: any) => {
+        if (error.status == 423) {
+          this.toastr.warning('Images are already being processed. Please try again later');
+        } else {
+          this.toastr.warning('Please try again later');
+        }
+      }
+    });
   }
 
 }

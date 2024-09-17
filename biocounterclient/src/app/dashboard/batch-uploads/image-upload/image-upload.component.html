@@ -1,12 +1,23 @@
 <div class="p-2">
   <p class="text-center font-semibold text-lg">Image</p>
+  <!-- <div class="flex justify-center">
+    <img [src]="image.image_file" [alt]="image.name" class="h-40 w-40" />
+  </div> -->
   <div class="flex justify-center">
-    <img [src]="image.image_file" [alt]="image._id" class="h-40 w-40" />
+    <img src="https://placehold.co/600x400" [alt]="image.name" class="h-40 w-40" />
   </div>
-  <div class="mt-2">
-    <p>Flowers</p>
-    <p>Date uploaded</p>
-    <p>User</p>
+  <div class="w-1/2">
+    <p class="text-center truncate">{{ image.name }}</p>
+  </div>
+  <div class="mt-2 bg-slate-100">
+    <div class="flex justify-between border-b border-slate-50">
+      <p class="text-base font-medium">Flowers</p>
+      <p>{{ image.flower_count }}</p>
+    </div>
+    <div class="flex justify-between border-b border-slate-50">
+      <p class="text-base font-medium">Date uploaded</p>
+      <p>{{ image.created | date }}</p>
+    </div>
   </div>
 
   <div class="flex justify-center mt-4">

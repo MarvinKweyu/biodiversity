@@ -24,28 +24,30 @@ class CommonBaseModel(models.Model):
         """
         Do not create a table for this model
         """
+
         abstract = True
-        ordering = ['created']
+        ordering = ["created"]
+
 
 class BatchImage(CommonBaseModel):
     """
     Image model representing each image in a batch upload
     """
-    
-    image_file = models.ImageField(upload_to="uploads/images/")
+
+    image_file = models.ImageField(upload_to="uploads/images/", blank=True, null=True)
+    name = models.CharField(max_length=500, blank=True, null=True)
     metadata = models.TextField(null=True, blank=True)
     flower_count = models.PositiveIntegerField(default=0)
     STATUS_OPTIONS = [
-        ('pending', 'Pending'),
-        ('processing', 'Processing'),
-        ('completed', 'Completed'),
+        ("pending", "Pending"),
+        ("processing", "Processing"),
+        ("completed", "Completed"),
     ]
     status = models.CharField(
         max_length=20,
         choices=STATUS_OPTIONS,
-        default='pending',
+        default="pending",
     )
-    
 
     def __str__(self):
-        return f"Image {self._id} with count {self.flower_count._id}"
+        return f"Image {self.name} with count {self.flower_count._id}"

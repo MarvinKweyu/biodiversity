@@ -42,14 +42,13 @@
       </span>
       <span> Sort </span>
     </p>
-
   </div>
   <div>
     <form class="relative" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
       <!-- class="border p-2 rounded-xl focus:outline-none focus:border-slate-400 focus:ring-0" -->
       <input
         type="text"
-        class="bg-white border rounded-3xl w-64 text-sm font-normal px-4 pl-8 py-1 focus:outline-none focus:border-slate-400 focus:ring-0"
+        class="bg-white border rounded-3xl w-40 md:w-64 text-sm font-normal px-4 pl-8 py-1 focus:outline-none focus:border-slate-400 focus:ring-0"
         placeholder="Search"
         formControlName="searchQuery"
       />

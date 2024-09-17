@@ -5,25 +5,26 @@
   </button>
 </div>
 
-<div class="grid grid-cols-4 gap-7 my-7">
+<div class="grid grid-cols-3 gap-7 my-7">
   <app-stat-card
     class="border rounded-2xl"
     title="Total uploads"
-    [value]="statistics.total"
+    [value]="statistics.total_images"
     background="bg-white"
     [showGraph]="false"
   ></app-stat-card>
   <app-stat-card
     class="border rounded-2xl"
-    title="Processed"
-    [value]="statistics.active"
+    title="Total flowers"
+    [value]="statistics.total_flowers"
     background="bg-white"
     [showGraph]="false"
   ></app-stat-card>
   <app-stat-card
+    title="Average count of flowers per image"
     class="border rounded-2xl"
-    title="Processing"
-    [value]="statistics.inactive"
+    title="Average flowers"
+    [value]="statistics.average_flowers"
     background="bg-white"
     [showGraph]="false"
   ></app-stat-card>
@@ -57,7 +58,7 @@
               (click)="showImage(upload)"
             >
               <td class="px-6 py-1">
-                <span class="mt-4 capitalize text-wrap"> {{ upload.metadata }} </span>
+                <span class="mt-4 capitalize text-wrap"> {{ upload.name }} </span>
               </td>
               <td class="px-6 py-1">
                 <span class="mt-4"> {{ upload.flower_count }} </span>

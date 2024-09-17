@@ -29,3 +29,5 @@ djangorestframework-simplejwt==5.3.1
 django-filter==24.3
 transformers==4.44.2
 torch==2.4.1
+datasets==3.0.0
+timm==1.0.9

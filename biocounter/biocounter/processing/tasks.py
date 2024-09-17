@@ -1,4 +1,6 @@
 import logging
+import os
+from PIL import Image
 from django.db import transaction
 
 from config import celery_app
@@ -7,24 +9,63 @@ import torch
 from PIL import Image
 
 
-from transformers import AutoImageProcessor, AutoModelForObjectDetection
+from transformers import pipeline
 
-
-from biocounter.users.models import User
 from biocounter.processing.models import BatchImage
 
 
 logger = logging.getLogger(__name__)
+
+from django.conf import settings
+
+file_path = os.path.join(settings.BASE_DIR, "testdata")
+
+
+@celery_app.task()
+def process_test_data() -> None:
+    """
+    Process pre-trained data
+    """
+    pipe = pipeline("object-detection", model="smutuvi/flower_count_model")
+    image_files = [
+        f for f in os.listdir(file_path) if f.endswith((".png", ".jpg", ".jpeg"))
+    ]
+
+    saved_results = []
+
+    for image_file in image_files:
+        image_path = os.path.join(file_path, image_file)
+        image = Image.open(image_path)
+        try:
+            results = pipe(image)
+            # check if this image already exists, if so skip it
+            if BatchImage.objects.filter(name=image_file).exists():
+                continue
+
+            saved_results.append(
+                BatchImage(
+                    name=image_file,
+                    flower_count=len(results),
+                    status="completed",
+                )
+            )
+        except Exception as e:
+            # we have this in case the model cannot, for some reason, process the image
+            logger.error(f"Error processing image {image_file}: {e}")
+            continue
+
+    BatchImage.objects.bulk_create(saved_results)
+    logger.info("Upload processed successfully")
 
 
 @celery_app.task()
 def process_batch_upload() -> None:
     """
     Process a batch upload
+    This can be used if processing from an upload made by the user
     """
     image_uploads = BatchImage.objects.filter(status="pending")
-    model = AutoModelForObjectDetection.from_pretrained("smutuvi/flower_count_model")
-    processor = AutoImageProcessor.from_pretrained("smutuvi/flower_count_model")
+    pipe = pipeline("object-detection", model="smutuvi/flower_count_model")
 
     # Process each image
     with transaction.atomic():
@@ -32,19 +73,9 @@ def process_batch_upload() -> None:
             image.status = "processing"
             image.save()
             img = Image.open(image.image_file.path)
-
-            inputs = processor(images=img, return_tensors="pt")
-
-            # infer
-            with torch.no_grad():
-                outputs = model(**inputs)
-
-            # Get the flower count from the model output (adjust as per your model's output)
-            flower_count = torch.argmax(outputs.logits, dim=-1).item()
-            # update the flower count for this image
-            image.flower_count = flower_count
+            result = pipe(img)
+            image.flower_count = len(result)
             image.status = "completed"
             image.save()
 
-         
     logger.info("Upload processed successfully")
