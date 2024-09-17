@@ -14,7 +14,8 @@ SECRET_KEY = env(
     default="AGOUr873OBTrmAy7JNytASLcP6bKPQdHLWfk4PLZ88RQn8BadjHafxcUm8YRXTCs",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]  # noqa: S104
+# the last IP os for the sake of the mobile app and the host with which it runs
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "10.0.2.2"]  # noqa: S104
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -72,5 +73,3 @@ INSTALLED_APPS += ["django_extensions"]
 
 # https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-eager-propagates
 CELERY_TASK_EAGER_PROPAGATES = True
-# Your stuff...
-# ------------------------------------------------------------------------------

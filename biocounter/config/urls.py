@@ -23,8 +23,6 @@ urlpatterns = [
     # User management
     path("users/", include("biocounter.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    # Your stuff: custom urls includes go here
-    # ...
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
@@ -39,12 +37,21 @@ urlpatterns += [
     # DRF auth token
     path("api/auth-token/", obtain_auth_token),
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
+    path("api/account-auth/", include("dj_rest_auth.urls")),
+    path(
+        "api/account-auth/registration/",  # new
+        include("dj_rest_auth.registration.urls"),
+    ),
     path(
         "api/docs/",
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
 ]
+
+admin.site.site_header = "Biodiversity Developer Admin"
+admin.site.site_title = "Biodiversity Admin Portal"
+admin.site.index_title = "Welcome to the Biodiversity Developer Portal"
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

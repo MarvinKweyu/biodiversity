@@ -1,0 +1,61 @@
+<!-- header -->
+<div class="flex justify-between bg-green-600 px-2 h-10">
+  <div class="flex">
+    <p class="text-white mr-1 mt-2 text-lg font-medium uppercase">Bio-diversity</p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-6 h-6 mt-2 ml-1 hidden"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+  </div>
+  <div class="flex mt-2 text-white">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6 mx-2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"
+      />
+    </svg>
+
+    <p class="text-base text-white">{{ admin_name }}</p>
+  </div>
+</div>
+
+<!-- center of the page -->
+<div class="hidden md:flex h-screen overflow-hidden">
+  <div class="basis-0 md:basis-2/12 border-r navigation h-full">
+    <app-side-nav />
+  </div>
+  <div class="basis-full md:basis-10/12 font-normal text-sm p-7.5 relative h-full overflow-y-scroll">
+    <router-outlet></router-outlet>
+
+    <div class="absolute top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2">
+      <mat-progress-spinner *ngIf="loading$ | async" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </div>
+</div>
+
+<div class="mx-6 flex h-screen md:hidden">
+  <div class="m-auto">
+    <p class="text-3xl text-center">Bio-diversity</p>
+    <p class="text-xl">We are not prepared for this screen</p>
+  </div>
+</div>
+
+<div class="grid h-screen place-items-center md:hidden">
+  <div class="mx-auto">
+    <p class="text-lg font-medium">We are not ready for this screen size!</p>
+  </div>
+</div>
