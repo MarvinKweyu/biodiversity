@@ -5,6 +5,7 @@ A computer-vision application for counting flowers
 - [biocounter](#biocounter)
   - [Running a local instance](#running-a-local-instance)
     - [Setting Up Users](#setting-up-users)
+    - [Background tasks](#background-tasks)
       - [Running tests with pytest](#running-tests-with-pytest)
     - [Test coverage](#test-coverage)
   - [Deployment](#deployment)
@@ -46,6 +47,9 @@ ADMIN_PASSWORD=adminpassword
 
 API documentation for the project can be accessed (once logged as an admin) on `http://127.0.0.1:8000/api/docs`.
 
+### Background tasks
+
+Background tasks can be accessed from the url: `http://localhost:5555` with credentials from the `envs.local.django` file path
 
 #### Running tests with pytest
 

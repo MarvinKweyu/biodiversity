@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:biocountermobile/features/auth/presentation/widgets/app_loader.dart';
+import 'package:biocountermobile/features/home/presentation/widgets/app_loader.dart';
 import 'package:biocountermobile/features/home/bloc/home_bloc.dart';
 import 'package:biocountermobile/features/home/presentation/widgets/image_data.dart';
 import 'package:flutter/material.dart';

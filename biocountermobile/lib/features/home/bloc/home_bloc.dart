@@ -31,5 +31,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       emit(state.copyWith(status: HomeStatus.error));
     }
+    // call initial
+    HomeInitial();
+    emit(state.copyWith(status: HomeStatus.initial));
   }
 }
