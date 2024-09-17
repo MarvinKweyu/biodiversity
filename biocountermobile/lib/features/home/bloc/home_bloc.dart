@@ -20,17 +20,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onSubmitImages(SubmitImagesEvent event, Emitter<HomeState> emit) async {
     emit(state.copyWith(status: HomeStatus.loading));
-
-    try {
-      final result = await imageService.submitImages(event.images);
-      if (result['status'] == "success") {
-        emit(state.copyWith(status: HomeStatus.success, images: []));
-      } else {
-        emit(state.copyWith(status: HomeStatus.error));
-      }
-    } catch (e) {
-      emit(state.copyWith(status: HomeStatus.error));
-    }
+    // the below can be used to send the image to the server
+    // try {
+    //   final result = await imageService.submitImages(event.images);
+    //   if (result['status'] == "success") {
+    //     emit(state.copyWith(status: HomeStatus.success, images: []));
+    //   } else {
+    //     emit(state.copyWith(status: HomeStatus.error));
+    //   }
+    // } catch (e) {
+    //   emit(state.copyWith(status: HomeStatus.error));
+    // }
     // call initial
     HomeInitial();
     emit(state.copyWith(status: HomeStatus.initial));
