@@ -3,40 +3,24 @@
 A computer-vision application for counting flowers
 
 - [biocounter](#biocounter)
-  - [Settings](#settings)
-  - [Basic Commands](#basic-commands)
-    - [Running a local instance](#running-a-local-instance)
-    - [Email Server](#email-server)
+  - [Running a local instance](#running-a-local-instance)
     - [Setting Up Users](#setting-up-users)
+    - [Background tasks](#background-tasks)
       - [Running tests with pytest](#running-tests-with-pytest)
     - [Test coverage](#test-coverage)
-    - [Sentry](#sentry)
   - [Deployment](#deployment)
 
-## Settings
 
-## Basic Commands
 
-### Running a local instance
+
+## Running a local instance
 
 ```bash
-docker compose -f docker-compose.local.yml up
+docker compose -f docker-compose.local.yml up --build
 ```
 
 Access the administrative dashboard on `http://127.0.0.1:8000/admin`.
 
-**For this setup , administrative credentials have been provided as below:**
-> [!NOTE]  
-> (WIP) For this setup , administrative credentials have been provided as below:
-
-Email:
-
-Password:
-
-
-### Email Server
-
-To test email notifications sent to users local SMTP server [Mailpit](https://github.com/axllent/mailpit) with a web interface is available as docker container at `http://127.0.0.1:8025`
 
 ### Setting Up Users
 
@@ -44,6 +28,28 @@ To test email notifications sent to users local SMTP server [Mailpit](https://gi
 
       $ docker compose -f docker-compose.local.yml run --rm django python manage.py createsuperuser
 
+
+
+Alternatively, you can create one from the below:
+
+```bash
+docker compose -f docker-compose.local.yml run --rm django python manage.py createadmin
+```
+This will create an administrator with the credentials:
+
+```
+ADMIN_USERNAME=bioadmin
+
+ADMIN_EMAIL=admin@bioadmin.com
+
+ADMIN_PASSWORD=adminpassword
+```
+
+API documentation for the project can be accessed (once logged as an admin) on `http://127.0.0.1:8000/api/docs`.
+
+### Background tasks
+
+Background tasks can be accessed from the url: `http://localhost:5555` with credentials from the `envs.local.django` file path
 
 #### Running tests with pytest
 
@@ -58,7 +64,9 @@ To run the tests, check your test coverage, and generate an HTML coverage report
     $ coverage html
     $ open htmlcov/index.html
 
-### Sentry
-
-
 ## Deployment
+
+
+```bash
+docker compose -f docker-compose.production.yml up --build
+```

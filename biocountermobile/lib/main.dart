@@ -1,5 +1,4 @@
 import 'package:biocountermobile/core/routes.dart';
-import 'package:biocountermobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:biocountermobile/features/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider<AuthBloc>(
-            create: (context) => AuthBloc(),
-          ),
-          BlocProvider<HomeBloc>(create: (context) => HomeBloc())
+          BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         ],
         child: MaterialApp.router(
           title: 'Bio-diversity ',

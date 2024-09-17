@@ -4,7 +4,8 @@ enum HomeStatus { initial, metaData, capturing, loading, success, error }
 
 class HomeState extends Equatable {
   final HomeStatus status;
-  final List images;
+  final List<MediaModel> images;
+
   const HomeState({
     this.status = HomeStatus.initial,
     this.images = const [],
@@ -12,7 +13,7 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     HomeStatus? status,
-    List? images,
+    List<MediaModel>? images,
   }) {
     return HomeState(
       status: status ?? this.status,
@@ -21,7 +22,7 @@ class HomeState extends Equatable {
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [images, status];
 }
 
 class HomeInitial extends HomeState {}

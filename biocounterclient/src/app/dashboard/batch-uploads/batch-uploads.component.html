@@ -1,24 +1,30 @@
 <p class="text-xl font-bold mb-1">Batch upload Management</p>
+<div class="flex justify-end">
+  <button (click)="processImages()" class="bg-amber-200 rounded-lg py-2.5 px-10 text-color text-center flex">
+    <p>Process images</p>
+  </button>
+</div>
 
-<div class="grid grid-cols-4 gap-7 my-7">
+<div class="grid grid-cols-3 gap-7 my-7">
   <app-stat-card
     class="border rounded-2xl"
     title="Total uploads"
-    [value]="statistics.total"
+    [value]="statistics.total_images"
     background="bg-white"
     [showGraph]="false"
   ></app-stat-card>
   <app-stat-card
     class="border rounded-2xl"
-    title="Processed"
-    [value]="statistics.active"
+    title="Total flowers"
+    [value]="statistics.total_flowers"
     background="bg-white"
     [showGraph]="false"
   ></app-stat-card>
   <app-stat-card
+    title="Average count of flowers per image"
     class="border rounded-2xl"
-    title="Processing"
-    [value]="statistics.inactive"
+    title="Average flowers"
+    [value]="statistics.average_flowers"
     background="bg-white"
     [showGraph]="false"
   ></app-stat-card>
@@ -49,22 +55,19 @@
             <tr
               class="bg-brand-primary-light md:h-10 text-xs font-normal border-b cursor-pointer hover:bg-slate-50 py-2 transition hover:rounded-full"
               *ngFor="let upload of batchUploads; let i = index"
-              [routerLink]="['/dashboard/batchuploads', upload._id]"
+              (click)="showImage(upload)"
             >
               <td class="px-6 py-1">
-                <span class="mt-4 capitalize">
-                  {{ upload.name }}
-                </span>
-              </td>
-
-              <td class="px-6 py-1">
-                <span class="mt-4 capitalize"> {{ upload.description }} </span>
+                <span class="mt-4 capitalize text-wrap"> {{ upload.name }} </span>
               </td>
               <td class="px-6 py-1">
-                <span class="mt-4 capitalize"> {{ upload.operating_system }} </span>
+                <span class="mt-4"> {{ upload.flower_count }} </span>
               </td>
               <td class="px-6 py-1">
-                <span class="mt-4"> {{ upload.disk_size }} </span>
+                <span class="mt-4 capitalize"> {{ upload.status }} </span>
+              </td>
+              <td class="px-6 py-1">
+                <span> {{ upload.updated | date }}</span>
               </td>
               <td class="px-6 py-1">
                 <span> {{ upload.created | date }}</span>

@@ -15,7 +15,7 @@ class CaptureImagesEvent extends HomeEvent {
 }
 
 class SubmitImagesEvent extends HomeEvent {
-  final List<Map<String, dynamic>> images;
+  final List<ImageUpload> images;
 
   const SubmitImagesEvent({
     required this.images,

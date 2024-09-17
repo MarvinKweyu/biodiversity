@@ -34,8 +34,8 @@
 </div>
 
 <!-- center of the page -->
-<div class="hidden md:flex h-screen overflow-hidden">
-  <div class="basis-0 md:basis-2/12 border-r navigation h-full">
+<div class="flex h-screen overflow-hidden">
+  <div class="dashboard basis-0 md:basis-2/12 border-r navigation h-full">
     <app-side-nav />
   </div>
   <div class="basis-full md:basis-10/12 font-normal text-sm p-7.5 relative h-full overflow-y-scroll">
@@ -44,18 +44,5 @@
     <div class="absolute top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2">
       <mat-progress-spinner *ngIf="loading$ | async" mode="indeterminate"></mat-progress-spinner>
     </div>
-  </div>
-</div>
-
-<div class="mx-6 flex h-screen md:hidden">
-  <div class="m-auto">
-    <p class="text-3xl text-center">Bio-diversity</p>
-    <p class="text-xl">We are not prepared for this screen</p>
-  </div>
-</div>
-
-<div class="grid h-screen place-items-center md:hidden">
-  <div class="mx-auto">
-    <p class="text-lg font-medium">We are not ready for this screen size!</p>
   </div>
 </div>

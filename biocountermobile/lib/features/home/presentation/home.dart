@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:biocountermobile/features/home/presentation/widgets/app_loader.dart';
 import 'package:biocountermobile/features/home/bloc/home_bloc.dart';
 import 'package:biocountermobile/features/home/presentation/widgets/image_data.dart';
 import 'package:flutter/material.dart';
@@ -25,21 +26,18 @@ class _HomeState extends State<Home> {
         builder: (context, state) {
           if (state.status == HomeStatus.metaData) {
             return ImageData(
-              images: images,
+              images: state.images,
             );
-          }
-          if (state.status == HomeStatus.error) {
+          } else if (state.status == HomeStatus.error) {
             return const Center(
               child: Text("An error occurred"),
             );
-          }
-          if (state.status == HomeStatus.success) {
-            // make images an empty list
-            images = [];
-            return const Center(
-              child: Text("Operation successful. "),
+          } else if (state.status == HomeStatus.loading) {
+            return const AppLoader(
+              message: "Submitting images",
             );
           }
+
           return Column(
             children: [
               ElevatedButton(
@@ -52,7 +50,6 @@ class _HomeState extends State<Home> {
                     setState(() {
                       images = capturedImages;
                     });
-
                     // ignore: use_build_context_synchronously
                     BlocProvider.of<HomeBloc>(context)
                         .add(CaptureImagesEvent(images: images));

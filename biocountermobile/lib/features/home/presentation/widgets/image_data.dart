@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:biocountermobile/core/styles.dart';
+import 'package:biocountermobile/features/home/presentation/widgets/default_button.dart';
 import 'package:biocountermobile/features/home/bloc/home_bloc.dart';
+import 'package:biocountermobile/features/home/models/ImageUpload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multiple_image_camera/camera_file.dart';
@@ -82,38 +85,35 @@ class _ImageDataState extends State<ImageData> {
                 ),
               ),
               const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Saving metadata...')),
-                      );
+              DefaultButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Saving metadata...')),
+                    );
 
-                      List<Map<String, dynamic>> imageData = [];
-                      for (var i = 0; i < widget.images.length; i++) {
-                        imageData.add({
-                          "file": File(widget.images[i].file.path),
-                          "metadata": metadataList[i],
-                        });
-                      }
-
-                      BlocProvider.of<HomeBloc>(context).add(SubmitImagesEvent(
-                        images: imageData,
+                    List<ImageUpload> imageData = [];
+                    for (var i = 0; i < widget.images.length; i++) {
+                      imageData.add(ImageUpload(
+                        image: widget.images[i].file.path,
+                        metadata: metadataList[i],
                       ));
                     }
-                  },
-                  child: const Text("Save"),
+
+                    BlocProvider.of<HomeBloc>(context).add(SubmitImagesEvent(
+                      images: imageData,
+                    ));
+                  }
+                },
+                btnColor: Styles.primaryColor,
+                borderColor: Styles.primaryColor,
+                child: Text(
+                  "Save",
+                  style: Styles.heading3(
+                    context,
+                    fontColor: Colors.white,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ],
