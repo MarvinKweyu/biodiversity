@@ -1,0 +1,129 @@
+<app-breadcrumb-menu [currentPage]="zipFile.name" [menuItems]="menuItems" />
+<div class="">
+  <div class="my-5">
+    <p class="font-semibold text-brand-black-100 text-lg">Zipfile: #{{ zipFile.name }}</p>
+    <div class="flex justify-between">
+      <!--      status ? 'Running' : 'Stopped'-->
+      <app-status-pill [status]="zipFile.status == 'complete' " [message]="zipFile.status" />
+      <div class="flex">
+        <button
+          *ngIf="zipFile.status == 'pending'"
+          class="bg-amber-200 mr-2 rounded-lg py-2.5 px-10 text-color text-center flex"
+          (click)="processFile()"
+        >
+          <p>Process</p>
+        </button>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="h-3/5 overflow-y-scroll">
+    <div class="rounded-lg border border-gray-300 w-full h-3/5 p-2 bg-white">
+      <div class="grid grid-cols-4 gap-4">
+        <div class="flex flex-col">
+          <p class="font-normal text-xs leading-4.5 text-brand-black">Name</p>
+          <p class="font-normal text-brand-black-80 text-sm">
+            {{ zipFile.name }}
+          </p>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-normal text-xs leading-4.5 text-brand-black">Date uploaded</p>
+          <p class="font-normal text-brand-black-80 text-sm">
+            {{ zipFile.created | date }}
+          </p>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-normal text-xs leading-4.5 text-brand-black">Date updated</p>
+          <p class="font-normal text-brand-black-80 text-sm capitalize" >
+            {{ zipFile.updated | date }}
+          </p>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-normal text-xs leading-4.5 text-brand-black">Images processed</p>
+          <p class="font-normal text-brand-black-80 text-sm">
+            {{zipFile.images}}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="mt-7.5">
+
+
+    <div class="mb-10 mt-4">
+      <app-table-filters />
+      <div class="w-full">
+        <div class="relative overflow-x-auto mt-2">
+          <table class="w-full text-xs text-left" id="data-table">
+            <thead class="text-xs border-b-2">
+            <tr class="text-gray-800">
+              <th
+                scope="col"
+                class="px-6 py-3 border-r text-brand-black leading-4.5 font-normal"
+                *ngFor="let headerTitle of tableHeader"
+              >
+                {{ headerTitle }}
+              </th>
+
+              <th scope="col" class="px-6 py-3"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              class="bg-brand-primary-light md:h-10 text-xs font-normal border-b cursor-pointer hover:bg-slate-50 py-2 transition hover:rounded-full"
+              *ngFor="let upload of batchUploads; let i = index"
+              (click)="showImage(upload)"
+            >
+              <td class="px-6 py-1">
+                <span class="mt-4 capitalize text-wrap"> {{ upload.name }} </span>
+              </td>
+              <td class="px-6 py-1">
+                <span class="mt-4"> {{ upload.flower_count }} </span>
+              </td>
+              <td class="px-6 py-1">
+                <span class="mt-4 capitalize"> {{ upload.status }} </span>
+              </td>
+              <td class="px-6 py-1">
+                <span> {{ upload.updated | date }}</span>
+              </td>
+              <td class="px-6 py-1">
+                <span> {{ upload.created | date }}</span>
+              </td>
+
+              <td class="px-6 py-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  class="self-end"
+                >
+                  <path
+                    d="M4 7C4.55228 7 5 7.44772 5 8C5 8.55229 4.55228 9 4 9C3.44772 9 3 8.55229 3 8C3 7.44772 3.44772 7 4 7Z"
+                    fill="#1C1C1C"
+                  />
+                  <path
+                    d="M8 7C8.55228 7 9 7.44772 9 8C9 8.55229 8.55228 9 8 9C7.44772 9 7 8.55229 7 8C7 7.44772 7.44772 7 8 7Z"
+                    fill="#1C1C1C"
+                  />
+                  <path
+                    d="M13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8C11 8.55228 11.4477 9 12 9C12.5523 9 13 8.55228 13 8Z"
+                    fill="#1C1C1C"
+                  />
+                </svg>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <app-pagination *ngIf="paginationData" [paginationData]="paginationData" />
+    </div>
+  </div>
+
+</div>

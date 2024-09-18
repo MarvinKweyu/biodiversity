@@ -4,7 +4,7 @@ from rest_framework.routers import SimpleRouter
 
 from biocounter.users.api.views import UserViewSet
 from biocounter.processing.api.views import (
-    
+    ZipFileViewSet,
     BatchImageViewSet,
     
 )
@@ -13,6 +13,7 @@ router = DefaultRouter() if settings.DEBUG else SimpleRouter()
 
 router.register("users", UserViewSet)
 # processing
+router.register("zipfiles", ZipFileViewSet)
 router.register("images", BatchImageViewSet)
 
 
