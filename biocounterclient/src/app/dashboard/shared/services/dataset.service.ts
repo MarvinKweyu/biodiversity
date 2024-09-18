@@ -10,8 +10,8 @@ export class DatasetService {
 
   constructor(private http: HttpClient) { }
 
-  fetchUploads(searchTerm: string, cursor: string): any {
-    return this.http.get(`${environment.baseUrl}images?search=${searchTerm}&cursor=${cursor}`);
+  fetchUploads(zipFileId: string, searchTerm: string, cursor: string): any {
+    return this.http.get(`${environment.baseUrl}images?search=${searchTerm}&cursor=${cursor}&zip_file=${zipFileId}`);
   }
 
   fetchImage(id: string): any {
@@ -33,6 +33,24 @@ export class DatasetService {
   fetchStats(): any {
     return this.http.get(`${environment.baseUrl}images/statistics/`);
   }
+
+  uploadFile(formData: FormData): any {
+    return this.http.post(`${environment.baseUrl}zipfiles/`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+  fetchZipFiles(searchTerm: string, cursor: string): any {
+    return this.http.get(`${environment.baseUrl}zipfiles?search=${searchTerm}&cursor=${cursor}`);
+  }
+
+  fetchZipFile(id: string): any {
+    return this.http.get(`${environment.baseUrl}zipfiles/${id}`);
+  }
+  processZipFile(id: string): any {
+    return this.http.get(`${environment.baseUrl}zipfiles/${id}/process/`);
+  }
+
 
 
 }

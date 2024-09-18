@@ -5,13 +5,12 @@ from django.db import transaction
 
 from config import celery_app
 
-import torch
+import zipfile
 from PIL import Image
-
 
 from transformers import pipeline
 
-from biocounter.processing.models import BatchImage
+from biocounter.processing.models import BatchImage, ZipFile
 
 
 logger = logging.getLogger(__name__)
@@ -77,5 +76,44 @@ def process_batch_upload() -> None:
             image.flower_count = len(result)
             image.status = "completed"
             image.save()
+
+    logger.info("Upload processed successfully")
+
+
+@celery_app.task()
+def process_compressed_upload(uploadId: str) -> None:
+    """
+    Process a compressed upload
+    This can be used if processing from an upload made by the user
+    """
+    zip_upload = ZipFile.objects.get(_id=uploadId)
+    pipe = pipeline("object-detection", model="smutuvi/flower_count_model")
+
+    zip_upload.status = "processing"
+    zip_upload.save()
+    saved_results = []
+
+    # unzip this file and get all images within it
+    with zipfile.ZipFile(zip_upload.zip_file, "r") as z:
+        for image in z.namelist():
+            with z.open(image) as f:
+                if not image.endswith((".png", ".jpg", ".jpeg")):
+                    continue
+                if BatchImage.objects.filter(name=image).exists():
+                    continue
+                img = Image.open(f)
+                flower_count = pipe(img)
+                saved_results.append(
+                BatchImage(
+                    zip_file=zip_upload,
+                    image_file=image,
+                    name=image,
+                    flower_count=len(flower_count),
+                    status="completed",
+                )
+            )
+    BatchImage.objects.bulk_create(saved_results)
+    zip_upload.status = "completed"
+    zip_upload.save()
 
     logger.info("Upload processed successfully")

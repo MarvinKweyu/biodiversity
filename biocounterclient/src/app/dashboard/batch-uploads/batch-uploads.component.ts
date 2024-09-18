@@ -14,6 +14,8 @@ import { DatasetService } from "../shared/services/dataset.service";
 import { AuthenticationService } from "../../auth/services/authentication.service";
 import { MatDialog } from '@angular/material/dialog';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { UploadComponent } from './upload/upload.component';
+import {ZipFile} from "../shared/interfaces/zip-file";
 
 
 @Component({
@@ -32,6 +34,7 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
   styleUrl: './batch-uploads.component.scss'
 })
 export class BatchUploadsComponent implements OnInit {
+
 
   navItems: NavItem[] = [
     {
@@ -54,11 +57,11 @@ export class BatchUploadsComponent implements OnInit {
     }
   ]
   paginationData: Pagination = { previous: '', next: '' };
-  batchUploads: batchUpload[] = [];
+  batchUploads: ZipFile[] = [];
   statistics: any = { 'total_images': 0, 'total_flowers': 0, 'average_flowers': 0 };
 
 
-  tableHeader: string[] = ["Name", "Flower count", "Status", "Updated", 'Uploaded',];
+  tableHeader: string[] = ["Name", "File count", "Status", "Updated", 'Uploaded',];
   processing: boolean = false;
 
   constructor(
@@ -84,13 +87,12 @@ export class BatchUploadsComponent implements OnInit {
   }
 
   fetchUploads(searchTerm: string, cursor: string) {
-    this.datasetService.fetchUploads(searchTerm, cursor).subscribe({
+    this.datasetService.fetchZipFiles(searchTerm, cursor).subscribe({
       next: (res: any) => {
         this.batchUploads = res.results;
         this.paginationData = { previous: res.previous, next: res.next };
       },
       error: (error: any) => {
-        console.error(error);
         this.toastr.error('Please try again later');
       }
     });
@@ -108,38 +110,14 @@ export class BatchUploadsComponent implements OnInit {
     });
   }
 
-  showImage(imageUpload: batchUpload) {
-    // open dialog
-    const dialogRef = this.dialog.open(ImageUploadComponent, {
-      width: imageUpload.image_file ? '25vw' : '15vw',
+  uploadCompressedFile() {
+    const dialogRef = this.dialog.open(UploadComponent, {
+      width: 'auto',
       height: 'auto',
-      data: imageUpload,
     });
     dialogRef.afterClosed().subscribe((res: any) => {
+      this.fetchUploads('', '');
 
-
-    });
-  }
-
-  processImages(): void {
-    if (this.processing) {
-      this.toastr.warning('Test images are currently being processed. Please try again later');
-      return;
-    }
-    this.datasetService.processImages().subscribe({
-      next: (res: any) => {
-        this.toastr.success('Images are being processed');
-        this.processing = true;
-        this.datasetService.setProcessing(true);
-
-      },
-      error: (error: any) => {
-        if (error.status == 423) {
-          this.toastr.warning('Images are already being processed. Please try again later');
-        } else {
-          this.toastr.warning('Please try again later');
-        }
-      }
     });
   }
 
